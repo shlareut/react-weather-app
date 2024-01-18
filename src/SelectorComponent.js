@@ -15,6 +15,7 @@ export default function SelectorComponent(props) {
       <option key="city-empty" value="">
         Select country
       </option>
+      {/* ISSUE: Whenever city is empty e.g. in microstates, it throws an error! */}
       {cities.map((item) => (
         <option key={`city-${item.city}`} value={item.city}>
           {item.country}
