@@ -30,9 +30,9 @@ export default function App() {
   return (
     <div className="flex justify-center w-full">
       <div className="w-1/5">
-        <div className="border-2 py-5 my-5">
-          <p>{`Status: ${weatherDescription}`}</p>
-          <p>{`Location: ${locationName}`}</p>
+        <div className="pl-5 border-2 py-5 my-5">
+          <p>{`Weather: ${weatherDescription}`}</p>
+          <p>{`City: ${locationName}`}</p>
         </div>
         <SelectorComponent setCity={setCity} />
       </div>
