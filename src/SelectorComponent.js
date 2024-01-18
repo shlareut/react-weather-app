@@ -4,7 +4,7 @@ import cities from './capitalCities.json';
 export default function SelectorComponent(props) {
   return (
     <select
-      className="border-2 border-black"
+      className="border-2 w-full"
       name="selector"
       id="selector"
       onChange={(event) => {
@@ -12,12 +12,10 @@ export default function SelectorComponent(props) {
         props.setCity(newCity);
       }}
     >
-      <option key="city-empty" value="">
-        Select country
-      </option>
       {/* ISSUE: Whenever city is empty e.g. in microstates, it throws an error! */}
       {cities.map((item) => (
         <option key={`city-${item.city}`} value={item.city}>
+          {/* Set city based on country - needs to change! */}
           {item.country}
         </option>
       ))}

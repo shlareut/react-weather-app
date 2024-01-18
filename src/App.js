@@ -8,7 +8,8 @@ export default function App() {
   // Define states for required weather data points.
   const [weatherDescription, setWeatherDescription] = useState('');
   const [locationName, setLocationName] = useState('');
-  const [city, setCity] = useState('Wien');
+  // City will break if empty! Set to Kabul as Afghanistan is first country in selector!
+  const [city, setCity] = useState('Kabul');
   const [country, setCountry] = useState('');
   // Fetch weather data.
   // PROBLEM - useEffect is not being called on state change! Hence, I change the city but nothing happens!
@@ -24,13 +25,17 @@ export default function App() {
     };
     weatherData();
     return () => {};
-  }, [city]); // Dependency is set to city, so every time city changes, useEffect() will run!
+  }, [city]); // LEARNING: Dependency is set to city, so every time city changes, useEffect() will run!
   // End of fetch weather data.
   return (
-    <>
-      <p>{`Status: ${weatherDescription}`}</p>
-      <p>{`Location: ${locationName}`}</p>
-      <SelectorComponent setCity={setCity} />
-    </>
+    <div className="flex justify-center w-full">
+      <div className="w-1/5">
+        <div className="border-2 py-5 my-5">
+          <p>{`Status: ${weatherDescription}`}</p>
+          <p>{`Location: ${locationName}`}</p>
+        </div>
+        <SelectorComponent setCity={setCity} />
+      </div>
+    </div>
   );
 }
