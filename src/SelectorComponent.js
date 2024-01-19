@@ -15,6 +15,7 @@ export default function SelectorComponent(props) {
         }}
       >
         {/* ISSUE: Whenever city is empty e.g. in microstates, it throws an error! */}
+        {/* Next step: Generate list from same weather API instead of static json. */}
         {cities.map((item) => (
           <option key={`city-${item.city}`} value={item.city}>
             {/* Set city based on country - needs to change! */}
