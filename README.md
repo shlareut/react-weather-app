@@ -27,3 +27,9 @@ This react weather widget was created as part of the UpLeveled GmbH coding boot 
 - Conditional rendering (if nothing was searched and if there's no result) is used to improve the UX.
 - The list of result is limited to 10 entries.
 - Upon selecting any result, the weather fetching is triggered using the LatLong of the selected city.
+
+## Additional notes
+
+- API key is set as env variable to avoid revealing it.
+- Env variable was configured on Netlify to make it work.
+- Using the widget on codesandbox won't work as env variable wasn't configured there.
