@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
 
 export default function App() {
-  // Vars
+  // Define states for LatLong used for weather data API fetching.
   const [selectedLat, setSelectedLat] = useState(48.2083537);
   const [selectedLong, setSelectedLong] = useState(16.3725042);
-  // Weather data
+  // Define states for weather data returned from weather API.
   const [temperature, setTemperature] = useState('');
   const [weatherDescription, setWeatherDescription] = useState('');
   const [weatherIcon, setWeatherIcon] = useState('');
   const [cityName, setCityName] = useState('');
   const [countryName, setCountryName] = useState('');
-  // City dropdown data
+  // Define states for city list and geolocation API.
   const [inputCity, setInputCity] = useState('');
   const [searchCity, setSearchCity] = useState('');
   const [resultCities, setResultCities] = useState([]);
-  // Various variables
+  // Define current date variables to show current day e.g. "Monday" in the UI.
   const currentDate = new Date();
   const daysOfWeek = [
     'Monday',
@@ -27,8 +27,8 @@ export default function App() {
     'Sunday',
   ];
   const dayOfWeek = daysOfWeek[currentDate.getDay()];
-  // API functions
-  // useEffect to fetch weather data.
+  // Start of async functions
+  // useEffect to fetch weather data using LatLong (taken from city list).
   useEffect(() => {
     const getWeather = async () => {
       const response = await fetch(
@@ -46,7 +46,7 @@ export default function App() {
       console.log(error);
     });
   }, [selectedLat, selectedLong]);
-  // useEffect to fetch city dropdown.
+  // useEffect to fetch city list based on user input.
   useEffect(() => {
     const getCities = async () => {
       const response = await fetch(
@@ -62,9 +62,11 @@ export default function App() {
       console.log(error);
     });
   }, [searchCity]);
+  // Start of user interface.
   return (
     <div className={styles.mainWrapper}>
       <h1>Weather widget</h1>
+      {/* Start of the weather display. */}
       <div className={styles.weatherDisplayWrapper}>
         <div className={styles.weatherContentWrapper}>
           <img
@@ -80,6 +82,7 @@ export default function App() {
           </div>
         </div>
       </div>
+      {/* Start of the city selector. */}
       <div className={styles.citySelectorWrapper}>
         <div className={styles.inputWrapper}>
           <input
@@ -105,7 +108,8 @@ export default function App() {
             Search now
           </button>
         </div>
-        <div className={styles.resultWrapper}>
+        {/* Start of the city name result list incl. conditional rendering. */}
+        <div>
           {!searchCity ? (
             <p>Please enter a city name.</p>
           ) : !resultCities[0] ? (
@@ -136,7 +140,9 @@ export default function App() {
             </>
           )}
         </div>
+        {/* End of the result list. */}
       </div>
+      {/* End of the city selector. */}
     </div>
   );
 }
