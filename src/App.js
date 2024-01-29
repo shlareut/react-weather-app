@@ -49,11 +49,12 @@ export default function App() {
   // useEffect to fetch city dropdown.
   useEffect(() => {
     const getCities = async () => {
-      setResultCities([]);
       const response = await fetch(
         `http://api.openweathermap.org/geo/1.0/direct?q=${searchCity}&limit=10&appid=${process.env.REACT_APP_API_KEY}`,
       );
       const result = await response.json();
+      const newResultCities = [];
+      newResultCities.push(result);
       setResultCities(result);
     };
 
