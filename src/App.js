@@ -27,7 +27,7 @@ export default function App() {
     'Sunday',
   ];
   const dayOfWeek = daysOfWeek[currentDate.getDay()];
-  // Functions
+  // API functions
   // useEffect to fetch weather data.
   useEffect(() => {
     const getWeather = async () => {
