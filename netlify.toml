@@ -1,4 +1,4 @@
 [build]
   publish = "build"
   command = "pnpm run build"
-  REACT_APP_API_KEY="7070a471d4cd2d3ad16d40f0c9464308"
+  REACT_APP_API_KEY="f03fc48f8d83d979459495d15c0264bd"
