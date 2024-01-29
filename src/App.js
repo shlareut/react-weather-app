@@ -3,7 +3,7 @@ import styles from './App.module.scss';
 
 export default function App() {
   // Consts
-  // const API_KEY = process.env.REACT_APP_openWeatherAPIKey;
+  const API_KEY = process.env.REACT_APP_openWeatherAPIKey;
   // Vars
   const [selectedLat, setSelectedLat] = useState(48.2083537);
   const [selectedLong, setSelectedLong] = useState(16.3725042);
