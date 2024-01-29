@@ -6,3 +6,92 @@
   box-sizing: border-box;
   font-family: 'Be Vietnam Pro', sans-serif;
 }
+
+.mainWrapper {
+  height: 95dvh;
+  width: 50dvw;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  border-bottom: 1px solid;
+  margin-bottom: 50px;
+}
+
+.weatherDisplayWrapper {
+  margin-bottom: 25px;
+  width: 75%;
+  background-color: #3d9ac1;
+  color: white;
+  border-radius: 5px;
+}
+
+.weatherContentWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 3fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.temp {
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.weatherTextWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.weatherDesc {
+  text-transform: capitalize;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.remainingWeatherInfo {
+  font-size: 10px;
+}
+
+.citySelectorWrapper {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputWrapper {
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.resultWrapper {
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input[type='radio'] {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button {
+  cursor: pointer;
+}
+
+li {
+  list-style: none;
+}
+
+p {
+  margin-bottom: 25px;
+  font-weight: 600;
+}

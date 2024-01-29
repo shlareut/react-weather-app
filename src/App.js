@@ -1,47 +1,55 @@
-import './App.module.scss';
 import { useEffect, useState } from 'react';
+import styles from './App.module.scss';
 
 export default function App() {
-  // Const for API secret.
+  // Consts
   const API_KEY = process.env.REACT_APP_openWeatherAPIKey;
-  // const API_KEY = 'a723aea928c83bf876a416d79bf6ece4';
-  // Define city variables
-  const [inputCity, setInputCity] = useState('');
-  const [searchCity, setSearchCity] = useState('Vienna');
-  const [resultCities, setResultCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('Vienna');
-  const [selectedCityState, setSelectedCityState] = useState('');
-  const [selectedCityCountry, setSelectedCityCountry] = useState('AT');
+  // Vars
   const [selectedLat, setSelectedLat] = useState(48.2083537);
   const [selectedLong, setSelectedLong] = useState(16.3725042);
-  // Define weather variables
+  // Weather data
   const [temperature, setTemperature] = useState('');
-  const [maxTemperature, setMaxTemperature] = useState('');
-  const [minTemperature, setMinTemperature] = useState('');
   const [weatherDescription, setWeatherDescription] = useState('');
-  const [weatherIcon, setWeatherIcon] = useState('01d');
-  const [locationName, setLocationName] = useState('');
-  // Define URL variables
-  const geocodeAPI = `http://api.openweathermap.org/geo/1.0/direct?q=${searchCity}&limit=10&appid=${API_KEY}`;
+  const [weatherIcon, setWeatherIcon] = useState('');
+  const [cityName, setCityName] = useState('');
+  const [countryName, setCountryName] = useState('');
+  // City dropdown data
+  const [inputCity, setInputCity] = useState('');
+  const [searchCity, setSearchCity] = useState('');
+  const [resultCities, setResultCities] = useState([]);
+  // Various variables
+  let currentDate = new Date();
+  const daysOfWeek = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  const dayOfWeek = daysOfWeek[currentDate.getDay()];
+  // Urls
   const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${selectedLat}&lon=${selectedLong}&units=metric&appid=${API_KEY}`;
-  // Fetch weather data.
+  const geocodeAPI = `http://api.openweathermap.org/geo/1.0/direct?q=${searchCity}&limit=10&appid=${API_KEY}`;
+  // Functions
+  // useEffect to fetch weather data.
   useEffect(() => {
     const getWeather = async () => {
       const response = await fetch(weatherAPI);
       const result = await response.json();
       setTemperature(result.main.temp);
-      setMaxTemperature(result.main.temp_max);
-      setMinTemperature(result.main.temp_min);
       setWeatherDescription(result.weather[0].description);
       setWeatherIcon(result.weather[0].icon);
-      setLocationName(result.name);
+      setCityName(result.name);
+      setCountryName(result.sys.country);
     };
 
     getWeather().catch((error) => {
       console.log(error);
     });
-  }, [selectedLat]);
-  // Fetch city search results.
+  }, [selectedLat, selectedLong]);
+  // useEffect to fetch city dropdown.
   useEffect(() => {
     const getCities = async () => {
       setResultCities([]);
@@ -56,78 +64,80 @@ export default function App() {
     console.log(resultCities);
   }, [searchCity]);
   return (
-    <>
-      <div>Weather widget</div>
-      <div>
-        <label>
-          Enter a city:
-          <input
-            name="cityName"
-            value={inputCity}
-            onChange={(event) => {
-              setInputCity(event.currentTarget.value);
-            }}
-          />
-        </label>
-      </div>
-      <div>
-        <button
-          onClick={() => {
-            setSearchCity(inputCity);
-          }}
-        >
-          Search city
-        </button>
-      </div>
-      <div>Results</div>
-      <div>
-        {!resultCities[0] ? (
-          <p>No results. Please search for a different city name.</p>
-        ) : (
-          <ul>
-            {resultCities.map((city) => (
-              <li key={`ID-${city.name}${city.state}${city.country}`}>
-                <label>
-                  <input
-                    type="radio"
-                    checked={
-                      selectedLat === city.lat && selectedLong === city.lon
-                    }
-                    onClick={() => {
-                      setSelectedCity(city.name);
-                      setSelectedCityState(city.state);
-                      setSelectedCityCountry(city.country);
-                      setSelectedLat(city.lat);
-                      setSelectedLong(city.lon);
-                    }}
-                  />
-                  {city.name}
-                  {city.state ? `, ${city.state}` : ''}, {city.country}
-                </label>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div>
-        {selectedCity}
-        {selectedCityState ? `, ${selectedCityState}` : ''},{' '}
-        {selectedCityCountry}
-      </div>
-      <ul>
-        <li>{temperature}</li>
-        <li>{maxTemperature}</li>
-        <li>{minTemperature}</li>
-        <li>{weatherDescription}</li>
-        <li>
-          {' '}
+    <div className={styles.mainWrapper}>
+      <h1>Weather widget</h1>
+      <div className={styles.weatherDisplayWrapper}>
+        <div className={styles.weatherContentWrapper}>
           <img
             alt="weather-icon"
             src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
           />
-        </li>
-        <li>{locationName}</li>
-      </ul>
-    </>
+          <div className={styles.temp}>{Math.round(temperature)}°C</div>
+          <div className={styles.weatherTextWrapper}>
+            <div className={styles.weatherDesc}>{weatherDescription}</div>
+            <div className={styles.remainingWeatherInfo}>
+              {dayOfWeek} - {cityName}, {countryName}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.citySelectorWrapper}>
+        <div className={styles.inputWrapper}>
+          <input
+            name="cityName"
+            placeholder="Enter a city name"
+            value={inputCity}
+            onChange={(event) => {
+              setInputCity(event.currentTarget.value);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setSearchCity(inputCity);
+                setInputCity('');
+              }
+            }}
+          />
+          <button
+            onClick={() => {
+              setSearchCity(inputCity);
+              setInputCity('');
+            }}
+          >
+            Search now
+          </button>
+        </div>
+        <div className={styles.resultWrapper}>
+          {!searchCity ? (
+            <p>Please enter a city name.</p>
+          ) : !resultCities[0] ? (
+            <p>No results. Please search for a different city name.</p>
+          ) : (
+            <>
+              <p>Select a city from the list below.</p>
+              <ul>
+                {resultCities.map((city) => (
+                  <li key={`ID-${city.name}${city.state}${city.country}`}>
+                    <label>
+                      <input
+                        type="radio"
+                        checked={
+                          selectedLat === city.lat && selectedLong === city.lon
+                        }
+                        onClick={() => {
+                          setSelectedLat(city.lat);
+                          setSelectedLong(city.lon);
+                        }}
+                      />
+                      {city.name}
+                      {city.state ? `, ${city.state}` : ''}, {city.country}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
