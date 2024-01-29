@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
 
 export default function App() {
-  // Consts
-  const API_KEY = process.env.REACT_APP_API_KEY;
   // Vars
   const [selectedLat, setSelectedLat] = useState(48.2083537);
   const [selectedLong, setSelectedLong] = useState(16.3725042);
@@ -18,7 +16,7 @@ export default function App() {
   const [searchCity, setSearchCity] = useState('');
   const [resultCities, setResultCities] = useState([]);
   // Various variables
-  let currentDate = new Date();
+  const currentDate = new Date();
   const daysOfWeek = [
     'Monday',
     'Tuesday',
@@ -29,14 +27,13 @@ export default function App() {
     'Sunday',
   ];
   const dayOfWeek = daysOfWeek[currentDate.getDay()];
-  // Urls
-  const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${selectedLat}&lon=${selectedLong}&units=metric&appid=${API_KEY}`;
-  const geocodeAPI = `http://api.openweathermap.org/geo/1.0/direct?q=${searchCity}&limit=10&appid=${API_KEY}`;
   // Functions
   // useEffect to fetch weather data.
   useEffect(() => {
     const getWeather = async () => {
-      const response = await fetch(weatherAPI);
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${selectedLat}&lon=${selectedLong}&units=metric&appid=${process.env.REACT_APP_API_KEY}`,
+      );
       const result = await response.json();
       setTemperature(result.main.temp);
       setWeatherDescription(result.weather[0].description);
@@ -53,7 +50,9 @@ export default function App() {
   useEffect(() => {
     const getCities = async () => {
       setResultCities([]);
-      const response = await fetch(geocodeAPI);
+      const response = await fetch(
+        `http://api.openweathermap.org/geo/1.0/direct?q=${searchCity}&limit=10&appid=${process.env.REACT_APP_API_KEY}`,
+      );
       const result = await response.json();
       setResultCities(result);
     };
@@ -61,7 +60,6 @@ export default function App() {
     getCities().catch((error) => {
       console.log(error);
     });
-    console.log(resultCities);
   }, [searchCity]);
   return (
     <div className={styles.mainWrapper}>
@@ -123,7 +121,7 @@ export default function App() {
                         checked={
                           selectedLat === city.lat && selectedLong === city.lon
                         }
-                        onClick={() => {
+                        onChange={() => {
                           setSelectedLat(city.lat);
                           setSelectedLong(city.lon);
                         }}
